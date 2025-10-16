@@ -61,7 +61,7 @@
     <!-- Main Content -->
     <main class="container my-4 flex-grow-1">
         <!-- Profile Section -->
-        
+
 
         <section class="mb-5">
             <div class="card shadow-sm">
@@ -80,7 +80,9 @@
                 <div class="card-body">
                     <div class="row g-3" id="projects">
                         <div class="col-md-4" data-tech="cplusplus blockchain">
-                            <div class="card h-100">
+                            <div class="card h-100 project-card" data-title="Bitcoin"
+                                data-desc="Разработал биткоин с нуля." data-img="../images/биток.jpg"
+                                data-tags="Блокчейн,C++" tabindex="0" role="button" aria-label="Открыть проект Bitcoin">
                                 <img src="../images/биток.jpg" class="card-img-top" alt="Личный сайт"
                                     style="height: 150px; object-fit: cover;">
                                 <div class="card-body">
@@ -95,7 +97,12 @@
                             </div>
                         </div>
                         <div class="col-md-4" data-tech="blender">
-                            <div class="card h-100">
+                            <!-- Tesla model 3 -->
+                            <div class="card h-100 project-card" data-title="Tesla model 3"
+                                data-desc="Придумал концепт Tesla model 3." data-img="../images/тесла.jpg"
+                                data-tags="Blender" tabindex="0" role="button"
+                                aria-label="Открыть проект Tesla model 3">
+
                                 <img src="../images/тесла.jpg" class="card-img-top" alt="Todo приложение"
                                     style="height: 150px; object-fit: cover;">
                                 <div class="card-body">
@@ -110,7 +117,12 @@
                             </div>
                         </div>
                         <div class="col-md-4" data-tech="robloxstudio">
-                            <div class="card h-100">
+                            <!-- Домодедово -->
+                            <div class="card h-100 project-card" data-title="Домодедово"
+                                data-desc="Спроектировал аэропорт Домодедово." data-img="../images/домодедово.jpg"
+                                data-tags="Roblox Studio" tabindex="0" role="button"
+                                aria-label="Открыть проект Домодедово">
+
                                 <img src="../images/домодедово.jpg" class="card-img-top" alt="Интернет-магазин"
                                     style="height: 150px; object-fit: cover;">
                                 <div class="card-body">
@@ -125,7 +137,11 @@
                             </div>
                         </div>
                         <div class="col-md-4" data-tech="blender cplusplus">
-                            <div class="card h-100">
+                            <!-- GTA 6 -->
+                            <div class="card h-100 project-card" data-title="GTA 6" data-desc="Разрабатываю GTA 6."
+                                data-img="../images/gta.jpeg" data-tags="Blender,C++" tabindex="0" role="button"
+                                aria-label="Открыть проект GTA 6">
+
                                 <img src="../images/gta.jpeg" class="card-img-top" alt="Todo приложение"
                                     style="height: 150px; object-fit: cover;">
                                 <div class="card-body">
@@ -219,6 +235,68 @@
             });
         });
     </script>
+
+
+    <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="projectImg" class="img-fluid rounded mb-3" alt="">
+                    <p id="projectDesc" class="mb-3"></p>
+                    <div id="projectTags" class="d-flex gap-2 flex-wrap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // делаем всю карточку кликабельной и открываем модалку
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.cursor = 'pointer';
+
+            const open = () => {
+                const modalEl = document.getElementById('projectModal');
+                document.getElementById('projectTitle').textContent = card.dataset.title || '';
+                document.getElementById('projectDesc').textContent = card.dataset.desc || '';
+
+                const img = document.getElementById('projectImg');
+                img.src = card.dataset.img || '';
+                img.alt = card.dataset.title || '';
+
+                const tagsWrap = document.getElementById('projectTags');
+                tagsWrap.innerHTML = '';
+                (card.dataset.tags || '')
+                    .split(',')
+                    .map(t => t.trim())
+                    .filter(Boolean)
+                    .forEach(t => {
+                        const span = document.createElement('span');
+                        span.className = 'badge bg-primary';
+                        span.textContent = t;
+                        tagsWrap.appendChild(span);
+                    });
+
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            };
+
+            // клик мышью
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a,button')) return; // не мешаем внутренним ссылкам/кнопкам
+                open();
+            });
+            // доступность с клавиатуры
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+            });
+        });
+    </script>
+
 
 
 </body>
